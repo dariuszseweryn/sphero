@@ -76,7 +76,7 @@ class Sphero(object):
         return self.write(request.GetRGB(self.seq))
 
     def get_version(self):
-        raise NotImplementedError
+        return self.write(request.GetVersion(self.seq))
 
     def get_device_name(self):
         # GET_DEVICE_NAME is not really part of the api, 

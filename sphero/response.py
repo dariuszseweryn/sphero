@@ -43,6 +43,24 @@ class GetRGB(Response):
         self.b = body[2]
 
 
+class GetVersion(Response):
+    def __init__(self, header, body):
+        super(GetVersion, self).__init__(header, body)
+        self.recv = body[0]
+        self.mdl = body[1]
+        self.hw = body[2]
+        self.msa_ver = body[3]
+        self.msa_rev = body[4]
+        self.bl = body[5]
+        self.bas = body[6]
+        self.macro = body[7]
+        self.api_maj = body[8]
+        self.api_min = body[9]
+
+    def __str__(self):
+        return "recv:%s\tmdl:%s\thw:%s\tmsa_ver:%s\tmsa_rev:%s\tbl:%s\t" % (hex(self.recv), hex(self.mdl), hex(self.hw), hex(self.msa_ver), hex(self.msa_rev), hex(self.bl))
+
+
 class GetBluetoothInfo(Response):
     def __init__(self, header, body):
         super(GetBluetoothInfo, self).__init__(header, body)
