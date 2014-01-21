@@ -55,10 +55,8 @@ class GetVersion(Response):
         self.bas = body[6]
         self.macro = body[7]
         self.api_maj = body[8]
-        self.api_min = body[9]
-
-    def __str__(self):
-        return "recv:%s\tmdl:%s\thw:%s\tmsa_ver:%s\tmsa_rev:%s\tbl:%s\t" % (hex(self.recv), hex(self.mdl), hex(self.hw), hex(self.msa_ver), hex(self.msa_rev), hex(self.bl))
+        # TODO: Sphero_API_1.50.pdf says that there should be 10 bytes of data, but apparently there are only 9... who knows if these are correct...
+        # self.api_min = body[9]
 
 
 class GetBluetoothInfo(Response):
