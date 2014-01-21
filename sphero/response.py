@@ -59,6 +59,12 @@ class GetVersion(Response):
         # self.api_min = body[9]
 
 
+class GetChassisId(Response):
+    def __init__(self, header, body):
+        super(GetChassisId, self).__init__(header, body)
+        self.chasis_id = ''.join(body)
+
+
 class GetBluetoothInfo(Response):
     def __init__(self, header, body):
         super(GetBluetoothInfo, self).__init__(header, body)

@@ -161,7 +161,7 @@ class Sphero(object):
         raise NotImplementedError
 
     def get_chassis_id(self):
-        raise NotImplementedError
+        return self.write(request.GetChassisId(self.seq))
 
     def set_chassis_id(self):
         raise NotImplementedError
