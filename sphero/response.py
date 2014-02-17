@@ -68,5 +68,6 @@ class GetChassisId(Response):
 class GetBluetoothInfo(Response):
     def __init__(self, header, body):
         super(GetBluetoothInfo, self).__init__(header, body)
+        # TODO: len(name) == 16 then bta is appended - technically name can have len up to 48 chars, but... ?s
         self.name = self.data.split('\x00', 1)[0]
         self.bta = self.data[16:].split('\x00', 1)[0]
