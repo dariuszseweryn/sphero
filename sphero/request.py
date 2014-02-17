@@ -33,7 +33,7 @@ class Request(object):
 
     def packet_body(self):
         if not self.data:
-            return ''    
+            return ''
         return struct.pack(self.fmt, *self.data)
 
     @property
