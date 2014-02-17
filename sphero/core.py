@@ -119,7 +119,7 @@ class Sphero(object):
     def jump_to_bootloader(self):
         raise NotImplementedError
 
-    def perform_level_1_diagnostics(self):
+    def perform_level_1_diagnostics(self, callback):
         return self.write(request.PerformLevel1Diagnostics(self.seq))
 
     def perform_level_2_diagnostics(self):
