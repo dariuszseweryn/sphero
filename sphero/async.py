@@ -31,6 +31,12 @@ class ResponseHandler(object):
         for listener in cls.listeners:
             listener.receivedResponse(cls.parse_handler.parse(body))
 
+def parse_response(async_response):
+    code = ord(async_response[2:3])
+    response_class_name = 'response_' + str(code)
+    response_class = getattr(sys.modules[__name__], response_class_name)
+    response_class.notifyListeners(async_response[5:])
+
 class AsyncMessage(object):
     SOP1 = 0xFF
     SOP2 = 0xFE
@@ -56,7 +62,7 @@ class AsyncMessage(object):
 
     @classmethod
     def parse(cls, body):
-        return None
+        return body
 
     @classmethod
     def registerListener(cls, listener):
