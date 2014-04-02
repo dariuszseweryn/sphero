@@ -55,7 +55,10 @@ class Sphero(object):
                 if self.sp.inWaiting() > 0:
                     self.async_response += self.sp.read()
                 if len(self.async_response) > 5:
-                    length = self.async_response[3:5]
+                    length_string = self.async_response[3:5]
+                    length = 0
+                    for char in length_string:
+                        length = (length << 8) + ord(char)
                     totalLength = len(self.async_response)
                     if length + 5 == totalLength:
                         async.parse_response(self.async_response)
