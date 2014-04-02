@@ -3,8 +3,9 @@ import struct
 
 class metacls(type):
     def __new__(mcs, name, bases, dicta):
-        print('metaclass create ' + name + ' code=' + mcs.__getattribute__('code'))
-        return type.__new__(mcs, name, bases, dicta)
+        t = type.__new__(mcs, name, bases, dicta)
+        print('metaclass create ' + name + ' code=' + t.getattr('code'))
+        return t
 
 class AsyncMessage(object):
     SOP1 = 0xFF
