@@ -1,8 +1,14 @@
 # coding: utf-8
 import struct
 
+class metacls(type):
+    def __new__(mcs, name, bases, dicta):
+        print('metaclass create')
+        return type.__new__(mcs, name, bases, dicta)
 
 class AsyncMessage(object):
+    __metaclass__ = metacls
+
     SOP1 = 0xFF
     SOP2 = 0xFE
     did = None
