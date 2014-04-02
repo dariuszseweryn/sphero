@@ -4,7 +4,7 @@ import struct
 class metacls(type):
     def __init__(cls, what, bases=None, dicta=None):
         super(metacls, cls).__init__(what, bases, dicta)
-        print('metaclass init ' + cls.__name__ + ' code=' + getattr(cls, 'code'))
+        print('metaclass init ' + cls.__name__ + ' code=' + str(getattr(cls, 'code')))
 
 
 class AsyncMessage(object):
