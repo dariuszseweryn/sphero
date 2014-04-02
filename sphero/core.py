@@ -3,6 +3,8 @@ import serial
 import struct
 import logging
 import glob
+import threading
+import async
 
 import request
 
@@ -17,6 +19,9 @@ class Sphero(object):
         self.dev = 0x00
         self.seq = 0x00
         self.set_sphero(path)
+        self.pause = threading.Event()
+        self.pause.clear()
+        self.async_response = ''
 
     def set_sphero(self, path=None):
         if not path:
@@ -36,6 +41,7 @@ class Sphero(object):
         while True:
             try:
                 self.sp = serial.Serial(self.path, 115200)
+                threading.Thread()
                 return
             except serial.serialutil.SerialException:
                 logging.info('retrying')
@@ -43,7 +49,23 @@ class Sphero(object):
                     raise SpheroError('failed to connect after %d tries' % (tries-retry))
                 retry -= 1
 
+    def async_messages_serial_port_reader(self):
+        while True:
+            if (not self.pause.is_set()) or len(self.async_response) > 0:
+                if self.sp.inWaiting() > 0:
+                    self.async_response += self.sp.read()
+                if len(self.async_response) > 5:
+                    length = int(self.async_response[3:5], 2**16)
+                    totalLength = len(self.async_response)
+                    if length + 5 == totalLength:
+                        async.parse_response(self.async_response)
+                        self.async_response = ''
+
+            else:
+                self.pause.wait()
+
     def write(self, packet):
+        # TODO: write should wait until self.async_response length == 0 and then self.pause.set() to pause async msg listener
         self.sp.write(str(packet))
         self.seq += 1
         if self.seq == 0xFF:
