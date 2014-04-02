@@ -3,12 +3,10 @@ import struct
 
 class metacls(type):
     def __new__(mcs, name, bases, dicta):
-        print('metaclass create ' + name)
+        print('metaclass create ' + name + ' code=' + mcs.__getattribute__('code'))
         return type.__new__(mcs, name, bases, dicta)
 
 class AsyncMessage(object):
-    __metaclass__ = metacls
-
     SOP1 = 0xFF
     SOP2 = 0xFE
     did = None
@@ -27,6 +25,8 @@ class AsyncMessage(object):
     #   that code (in this case set_01) if exists we check for a proper class
     #   -> PowerNotification and make it parse the response data which will
     #   then be distributed among listeners contained within set_01
+
+    __metaclass__ = metacls
 
     def __new__(cls):
         print('aaa')
