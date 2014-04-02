@@ -12,7 +12,8 @@ class metacls(type):
     #         new_class.base_class = cls
 
     def __new__(cls, name, bases, attr):
-        new_name = "response_" + str(getattr(cls, 'code'))
+        new_cls = type.__new__(cls, name, bases, attr)
+        new_name = "response_" + str(getattr(new_cls, 'code'))
         print(name + ' ' + new_name)
         return type.__new__(cls, new_name, bases, attr)
 
