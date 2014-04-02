@@ -4,8 +4,24 @@ import struct
 class metacls(type):
     def __init__(cls, what, bases=None, dicta=None):
         super(metacls, cls).__init__(what, bases, dicta)
-        print('metaclass init ' + cls.__name__ + ' code=' + str(getattr(cls, 'code')))
+        code = getattr(cls, 'code')
+        if (code > 0):
+            new_class = type('response_' + str(code), (ResponseHandler,), {})
+            new_class.base_class = cls
 
+class ResponseHandler(object):
+    listeners = set()
+    base_class = None
+
+    def registerListener(self, listener):
+        self.listeners.add(listener)
+
+    def unregisterListener(self, listener):
+        self.listeners.remove(listener)
+
+    def notifyListeners(self, body):
+        for listener in self.listeners:
+            listener.receivedResponse(self.base_class.parse(body))
 
 class AsyncMessage(object):
     SOP1 = 0xFF
@@ -33,6 +49,9 @@ class AsyncMessage(object):
         print('aaa')
 
         return super.__new__(super)
+
+    def parse(self, body):
+        return None
 
 
 class PreSleepWarning(AsyncMessage):
