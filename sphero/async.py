@@ -62,7 +62,7 @@ class AsyncMessage(object):
 
     @classmethod
     def parse(cls, body):
-        return None
+        return body
 
     @classmethod
     def registerListener(cls, listener):

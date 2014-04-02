@@ -41,7 +41,7 @@ class Sphero(object):
         while True:
             try:
                 self.sp = serial.Serial(self.path, 115200)
-                threading.Thread()
+                threading.Thread(target=self.async_messages_serial_port_reader).start()
                 return
             except serial.serialutil.SerialException:
                 logging.info('retrying')
