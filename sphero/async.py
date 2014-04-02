@@ -2,12 +2,20 @@
 import struct
 
 class metacls(type):
-    def __init__(cls, what, bases=None, dicta=None):
-        super(metacls, cls).__init__(what, bases, dicta)
-        code = getattr(cls, 'code')
-        if (code > 0):
-            new_class = type('response_' + str(code), (ResponseHandler,), {})
-            new_class.base_class = cls
+
+
+    # def __init__(cls, what, bases=None, dict=None):
+    #     super(metacls, cls).__init__(what, bases, dict)
+    #     code = getattr(cls, 'code')
+    #     if (code > 0):
+    #         new_class = type('response_' + str(code), (ResponseHandler,), {})
+    #         new_class.base_class = cls
+
+    def __new__(cls, name, bases, attr):
+        new_name = "response_" + str(getattr(cls, 'code'))
+        print(name + ' ' + new_name)
+        return type.__new__(cls, new_name, bases, attr)
+
 
 class ResponseHandler(object):
     listeners = set()
