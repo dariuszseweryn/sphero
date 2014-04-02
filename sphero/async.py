@@ -2,10 +2,10 @@
 import struct
 
 class metacls(type):
-    def __new__(mcs, name, bases, dicta):
-        t = type.__new__(mcs, name, bases, dicta)
-        print('metaclass create ' + name + ' code=' + t.getattr('code'))
-        return t
+    def __init__(cls, what, bases=None, dicta=None):
+        super(metacls, cls).__init__(what, bases, dicta)
+        print('metaclass init ' + cls.__name__ + ' code=' + getattr(cls, 'code'))
+
 
 class AsyncMessage(object):
     SOP1 = 0xFF
