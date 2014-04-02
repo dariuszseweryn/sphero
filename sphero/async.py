@@ -1,36 +1,35 @@
 # coding: utf-8
-import struct
+import sys
 
 class metacls(type):
 
-
-    # def __init__(cls, what, bases=None, dict=None):
-    #     super(metacls, cls).__init__(what, bases, dict)
-    #     code = getattr(cls, 'code')
-    #     if (code > 0):
-    #         new_class = type('response_' + str(code), (ResponseHandler,), {})
-    #         new_class.base_class = cls
-
     def __new__(cls, name, bases, attr):
-        new_cls = type.__new__(cls, name, bases, attr)
-        new_name = "response_" + str(getattr(new_cls, 'code'))
-        print(name + ' ' + new_name)
-        return type.__new__(cls, new_name, bases, attr)
+        new__ = type.__new__(cls, name, bases, attr)
+        print(attr)
+        if 'code' in attr:
+            new_name = "response_" + str(attr['code'])
+            response_handler_class = type(new_name, (ResponseHandler, ), {'parse_handler': new__})
+            setattr(sys.modules[__name__], new_name, response_handler_class)
+            new__.response_handler = response_handler_class
+        return new__
 
 
 class ResponseHandler(object):
     listeners = set()
-    base_class = None
+    parse_handler = None
 
-    def registerListener(self, listener):
-        self.listeners.add(listener)
+    @classmethod
+    def registerListener(cls, listener):
+        cls.listeners.add(listener)
 
-    def unregisterListener(self, listener):
-        self.listeners.remove(listener)
+    @classmethod
+    def unregisterListener(cls, listener):
+        cls.listeners.remove(listener)
 
-    def notifyListeners(self, body):
-        for listener in self.listeners:
-            listener.receivedResponse(self.base_class.parse(body))
+    @classmethod
+    def notifyListeners(cls, body):
+        for listener in cls.listeners:
+            listener.receivedResponse(cls.parse_handler.parse(body))
 
 class AsyncMessage(object):
     SOP1 = 0xFF
@@ -39,6 +38,7 @@ class AsyncMessage(object):
     cid = None
     code = 0x00
     DLEN = 0
+    response_handler = None
 
     # TODO mapping of response codes to classes and callbacks
     # first idea:
@@ -54,13 +54,17 @@ class AsyncMessage(object):
 
     __metaclass__ = metacls
 
-    def __new__(cls):
-        print('aaa')
-
-        return super.__new__(super)
-
-    def parse(self, body):
+    @classmethod
+    def parse(cls, body):
         return None
+
+    @classmethod
+    def registerListener(cls, listener):
+        cls.response_handler.registerListener(listener)
+
+    @classmethod
+    def unregisterListener(cls, listener):
+        cls.response_handler.unregisterListener(listener)
 
 
 class PreSleepWarning(AsyncMessage):
