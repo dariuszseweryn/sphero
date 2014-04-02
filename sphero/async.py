@@ -22,10 +22,10 @@ class AsyncMessage(object):
     #   -> PowerNotification and make it parse the response data which will
     #   then be distributed among listeners contained within set_01
 
-    def __new__(cls, clsname, bases, dct):
+    def __new__(cls):
         print('aaa')
 
-        return super.__new__(super, clsname, bases, dct)
+        return super.__new__(super)
 
 
 class PreSleepWarning(AsyncMessage):
