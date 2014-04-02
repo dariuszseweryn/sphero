@@ -1,6 +1,35 @@
 # coding: utf-8
-import struct
+import sys
 
+class metacls(type):
+
+    def __new__(cls, name, bases, attr):
+        new__ = type.__new__(cls, name, bases, attr)
+        print(attr)
+        if 'code' in attr:
+            new_name = "response_" + str(attr['code'])
+            response_handler_class = type(new_name, (ResponseHandler, ), {'parse_handler': new__})
+            setattr(sys.modules[__name__], new_name, response_handler_class)
+            new__.response_handler = response_handler_class
+        return new__
+
+
+class ResponseHandler(object):
+    listeners = set()
+    parse_handler = None
+
+    @classmethod
+    def registerListener(cls, listener):
+        cls.listeners.add(listener)
+
+    @classmethod
+    def unregisterListener(cls, listener):
+        cls.listeners.remove(listener)
+
+    @classmethod
+    def notifyListeners(cls, body):
+        for listener in cls.listeners:
+            listener.receivedResponse(cls.parse_handler.parse(body))
 
 class AsyncMessage(object):
     SOP1 = 0xFF
@@ -9,6 +38,7 @@ class AsyncMessage(object):
     cid = None
     code = 0x00
     DLEN = 0
+    response_handler = None
 
     # TODO mapping of response codes to classes and callbacks
     # first idea:
@@ -22,6 +52,19 @@ class AsyncMessage(object):
     #   -> PowerNotification and make it parse the response data which will
     #   then be distributed among listeners contained within set_01
 
+    __metaclass__ = metacls
+
+    @classmethod
+    def parse(cls, body):
+        return None
+
+    @classmethod
+    def registerListener(cls, listener):
+        cls.response_handler.registerListener(listener)
+
+    @classmethod
+    def unregisterListener(cls, listener):
+        cls.response_handler.unregisterListener(listener)
 
 
 class PreSleepWarning(AsyncMessage):
