@@ -127,7 +127,7 @@ class Sphero(object):
         raise NotImplementedError
 
     def set_power_notification(self, on):
-        raise self.write(request.SetPowerNotification(self.seq, 0x01 if on else 0x00))
+        return self.write(request.SetPowerNotification(self.seq, 0x01 if on else 0x00))
 
     def sleep(self, wakeup=0, macro=0, orbbasic=0):
         return self.write(request.Sleep(self.seq, wakeup, macro, orbbasic))
