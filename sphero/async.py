@@ -32,7 +32,7 @@ class ResponseHandler(object):
             listener.receivedResponse(cls.parse_handler.parse(body))
 
 def parse_response(async_response):
-    code = int(async_response[2:3], 2**16)
+    code = async_response[2:3]
     response_class_name = 'response_' + str(code)
     response_class = getattr(sys.modules[__name__], response_class_name)
     response_class.notifyListeners(async_response[5:])
