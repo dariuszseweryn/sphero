@@ -3,7 +3,7 @@ import struct
 
 class metacls(type):
     def __new__(mcs, name, bases, dicta):
-        print('metaclass create')
+        print('metaclass create ' + name)
         return type.__new__(mcs, name, bases, dicta)
 
 class AsyncMessage(object):
