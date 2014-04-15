@@ -194,8 +194,8 @@ class Sphero(object):
     def self_level(self):
         raise NotImplementedError
 
-    def set_data_streaming(self):
-        raise NotImplementedError
+    def set_data_streaming(self, n, m, mask, pcnt, mask2=None):
+        return self.write(request.SetDataStreaming(self.seq, n, m, mask, pcnt, mask2))
 
     def configure_collision_detection(self, meth, xt, xspd, yt, yspd, dead):
         return self.write(request.ConfigureCollisionDetection(self.seq, meth, xt, xspd, yt, yspd, dead))

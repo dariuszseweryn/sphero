@@ -148,11 +148,15 @@ class SetVDL(Sphero):
 class SetDataStreaming(Sphero):
     cid = 0x11
 
+    def __init__(self, seq=0x00, *data):
+        super(SetDataStreaming, self).__init__(seq, data)
+        self.fmt = '2hIb' if len(data) == 9 else '2hIbI' #n, m, mask, pcnt, mask2 (optional)
+
 class ConfigureCollisionDetection(Sphero):
     cid = 0x12
 
 class ConfigureLocator(Sphero):
-    fmt = '!B3h'
+    fmt = '!B3h' #flags, x, y, yaw tare
     cid = 0x13
 
 class SetAccelerometer(Sphero):
