@@ -36,7 +36,7 @@ def parse_response(async_response):
     code = ord(async_response[2:3])
     response_class_name = 'response_' + str(code)
     response_class = getattr(sys.modules[__name__], response_class_name)
-    response_class.notifyListeners(async_response[5:])
+    response_class.notifyListeners(async_response[5:-1])
 
 class AsyncMessage(object):
     SOP1 = 0xFF
@@ -136,8 +136,7 @@ class CollisionDetected(Sphero):
 
     @classmethod
     def parse(cls, body):
-        print(len(body))
-        return unpack("3hb2hBL", body)
+        return unpack('!3hb2hBL', body)
 
 class SelfLevelResult(Sphero):
     cid = 0x09
