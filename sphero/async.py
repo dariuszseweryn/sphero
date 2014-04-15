@@ -136,7 +136,7 @@ class CollisionDetected(Sphero):
 
     @classmethod
     def parse(cls, body):
-        return unpack("hhhbhhBL", body)
+        return unpack("3hb2hBL", body)
 
 class SelfLevelResult(Sphero):
     cid = 0x09
