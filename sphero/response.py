@@ -71,3 +71,17 @@ class GetBluetoothInfo(Response):
         # TODO: len(name) == 16 then bta is appended - technically name can have len up to 48 chars, but... ?s
         self.name = self.data.split('\x00', 1)[0]
         self.bta = self.data[16:].split('\x00', 1)[0]
+
+
+class ReadLocator(Response):
+    def __init__(self, header, body):
+        super(ReadLocator, self).__init__(header, body)
+        self.xpos = body[0]
+        self.ypos = body[1]
+        self.xvel = body[2]
+        self.yvel = body[3]
+        self.sog = body[4]
+
+    @property
+    def fmt(self):
+        return '!5h'

@@ -283,6 +283,9 @@ class Sphero(object):
     def erase_user_config(self):
         raise NotImplementedError
 
+    def read_locator(self):
+        return self.write(request.ReadLocator(self.seq))
+
     # Additional "higher-level" commands
 
     def stop(self):
