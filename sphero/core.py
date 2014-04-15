@@ -198,7 +198,7 @@ class Sphero(object):
         raise NotImplementedError
 
     def configure_collision_detection(self, meth, xt, xspd, yt, yspd, dead):
-        raise self.write(request.ConfigureCollisionDetection(self.seq, meth, xt, xspd, yt, yspd, dead))
+        return self.write(request.ConfigureCollisionDetection(self.seq, meth, xt, xspd, yt, yspd, dead))
 
     def set_back_led_output(self, value):
         """value can be between 0x00 and 0xFF"""
