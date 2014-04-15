@@ -149,7 +149,7 @@ class SetDataStreaming(Sphero):
     cid = 0x11
 
     def __init__(self, seq=0x00, *data):
-        newData = tuple([element for element in data if element])
+        newData = tuple([element for element in data if element is not None])
         super(SetDataStreaming, self).__init__(seq, *newData)
         self.fmt = '!2hIbI' if len(newData) == 5 else '!2hIb' #n, m, mask, pcnt, mask2 (optional)
 
