@@ -151,14 +151,15 @@ class SetDataStreaming(Sphero):
 class ConfigureCollisionDetection(Sphero):
     cid = 0x12
 
-class Locator(Sphero):
+class ConfigureLocator(Sphero):
+    fmt = '!B3h'
     cid = 0x13
 
 class SetAccelerometer(Sphero):
     cid = 0x14
 
 class ReadLocator(Sphero):
-    cid=0x15
+    cid = 0x15
 
 class SetRGB(Sphero):
     cid = 0x20

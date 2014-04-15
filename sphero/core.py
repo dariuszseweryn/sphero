@@ -210,7 +210,7 @@ class Sphero(object):
         heading can have value between 0 and 359
 
         """
-        return self.write(request.Roll(self.seq, speed, heading, state ))
+        return self.write(request.Roll(self.seq, speed, heading, state))
 
     def set_boost_with_time(self):
         raise NotImplementedError
@@ -282,6 +282,9 @@ class Sphero(object):
 
     def erase_user_config(self):
         raise NotImplementedError
+
+    def configure_locator(self, flags, x, y, yawTare):
+        return self.write(request.ConfigureLocator(self.seq, flags, x, y, yawTare))
 
     def read_locator(self):
         return self.write(request.ReadLocator(self.seq))
