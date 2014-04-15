@@ -1,5 +1,6 @@
 # coding: utf-8
 import sys
+from struct import unpack
 
 class metacls(type):
 
@@ -132,6 +133,10 @@ class ConfigBlock(Sphero):
 class CollisionDetected(Sphero):
     cid = 0x12
     code = 0x07
+
+    @classmethod
+    def parse(cls, body):
+        return unpack("hhhbhhBL", body)
 
 class SelfLevelResult(Sphero):
     cid = 0x09
